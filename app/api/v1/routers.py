@@ -1,16 +1,46 @@
 import random
+from typing import List, Dict, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.repositories.contact_repo import ContactRepository, get_contact_repo
 from app.repositories.lead_repo import LeadRepository, get_lead_repo
 from app.repositories.operator_repo import OperatorRepository, get_operator_repo
 from app.repositories.source_repo import SourceRepository, get_source_repo
 from app.schemas.contact import ContactResponse, ContactCreate
-from app.schemas.operator import OperatorResponse, OperatorCreate
+from app.schemas.lead import LeadResponse
+from app.schemas.operator import OperatorResponse, OperatorCreate, OperatorUpdate
 from app.schemas.source import SourceResponse, SourceWeightCreate, SourceCreateRequest
 
 router = APIRouter(prefix="/v1", tags=["v1"])
+
+
+@router.post("/operators/", response_model=OperatorResponse)
+async def create_operator(
+    op: OperatorCreate, repo: OperatorRepository = Depends(get_operator_repo)
+):
+    return await repo.create(op.name, op.max_load_limit)
+
+
+@router.get("/operators/", response_model=List[OperatorResponse])
+async def get_all_operators(
+    repo: OperatorRepository = Depends(get_operator_repo),
+):
+    return await repo.get_all()
+
+
+@router.patch("/operators/{operator_id}", response_model=OperatorResponse)
+async def update_operator(
+    operator_id: int,
+    op_update: OperatorUpdate,
+    repo: OperatorRepository = Depends(get_operator_repo),
+):
+    operator = await repo.update(operator_id, op_update)
+    if not operator:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Operator not found"
+        )
+    return operator
 
 
 @router.post("/operators", response_model=OperatorResponse)
@@ -72,3 +102,13 @@ async def register_contact(
     )
 
     return contact
+
+
+@router.get("/distribution/load/", response_model=List[Dict[str, Any]])
+async def get_load_distribution(repo: ContactRepository = Depends(get_contact_repo)):
+    return await repo.get_current_distribution()
+
+
+@router.get("/leads/", response_model=List[LeadResponse])
+async def get_all_leads(repo: ContactRepository = Depends(get_contact_repo)):
+    return await repo.get_all_leads_with_contacts()

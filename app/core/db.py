@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.core.config import settings
+from app.models.base import Base
 
 async_engine: AsyncEngine = create_async_engine(
     settings.db.url,
@@ -29,3 +30,8 @@ async def get_session() -> AsyncGenerator[AsyncSession, Any]:
         except Exception:
             await session.rollback()
             raise
+
+
+async def init_db():
+    async with async_engine.begin() as connection:
+        await connection.run_sync(Base.metadata.create_all)

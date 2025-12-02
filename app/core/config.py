@@ -26,11 +26,11 @@ class DbSettings(BaseSettings):
 
     @property
     def url(self) -> str:
-        return f"{self.dialect}+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+        return f"{self.dialect}+aiosqlite:///./{self.db}.db"
 
-    @property
-    def sync_url(self) -> str:
-        return f"{self.dialect}+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+    # @property
+    # def sync_url(self) -> str:
+    #     return f"{self.dialect}+psycopg2://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
 
 
 class AppSettings(BaseSettings):

@@ -1,7 +1,13 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 from app.models.base import Base
+
+if TYPE_CHECKING:
+    from app.models.contact import Contact
+    from app.models.source import SourceOperatorWeight
 
 
 class Operator(Base):
@@ -11,7 +17,7 @@ class Operator(Base):
         Integer,
         primary_key=True,
     )
-    name: Mapped[String] = mapped_column(
+    name: Mapped[str] = mapped_column(
         String(100),
         nullable=False,
     )
@@ -24,8 +30,8 @@ class Operator(Base):
         default=5,
     )
 
-    weight: Mapped['sourceOperatorWeight'] = relationship(
-        'sourceOperatorWeight',
+    weights: Mapped['SourceOperatorWeight'] = relationship(
+        'SourceOperatorWeight',
         back_populates='operator',
     )
     contacts: Mapped['Contact'] = relationship(

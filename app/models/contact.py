@@ -22,7 +22,7 @@ class Contact(Base):
         DateTime(timezone=True),
         server_default=func.now(),
     )
-    status: Mapped[String] = mapped_column(
+    status: Mapped[str] = mapped_column(
         String,
         default='active',
     )

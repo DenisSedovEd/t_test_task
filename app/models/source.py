@@ -11,7 +11,7 @@ class Source(Base):
     id: Mapped[int] = mapped_column(
         Integer, primary_key=True,
     )
-    name: Mapped[String] = mapped_column(
+    name: Mapped[str] = mapped_column(
         String,
         unique=True,
         nullable=False,

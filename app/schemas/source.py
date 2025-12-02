@@ -1,14 +1,19 @@
-from sqlalchemy.orm import DeclarativeBase
+from typing import List
 
+from pydantic import BaseModel
 
-class SourceWeightCreate(DeclarativeBase):
+class SourceWeightCreate(BaseModel):
     operator_id: int
     weight: int
 
-class SourceCreate(DeclarativeBase):
+class SourceCreate(BaseModel):
     name: str
 
-class SourceResponse(DeclarativeBase):
+class SourceCreateRequest(BaseModel):
+    name: str
+    weights: List[SourceWeightCreate]
+
+class SourceResponse(BaseModel):
     id: int
     name: str
 

@@ -1,7 +1,7 @@
-from sqlalchemy.orm import DeclarativeBase
+from pydantic import BaseModel
 
 
-class OperatorBase(DeclarativeBase):
+class OperatorBase(BaseModel):
     name: str
     is_active: bool
     max_load_limit: int

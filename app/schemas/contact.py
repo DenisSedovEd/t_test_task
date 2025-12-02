@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy.orm import DeclarativeBase
+from pydantic import BaseModel
 
 
-class ContactBase(DeclarativeBase):
+class ContactBase(BaseModel):
     pass
 
 class ContactCreate(ContactBase):

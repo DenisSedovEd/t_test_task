@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_session
 from app.models.operator import Operator
-from app.schemas.operator import OperatorCreate, OperatorUpdate
+from app.schemas.operator import OperatorUpdate
 
 
 def get_operator_repo(

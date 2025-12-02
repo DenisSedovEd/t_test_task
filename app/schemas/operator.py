@@ -8,13 +8,17 @@ class OperatorBase(BaseModel):
     is_active: bool
     max_load_limit: int
 
+
 class OperatorCreate(OperatorBase):
     pass
 
+
 class OperatorResponse(OperatorBase):
     id: int
+
     class Config:
         from_attributes = True
+
 
 class OperatorUpdate(BaseModel):
     name: Optional[str] = None

@@ -1,5 +1,5 @@
 import random
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -7,10 +7,10 @@ from app.repositories.contact_repo import ContactRepository, get_contact_repo
 from app.repositories.lead_repo import LeadRepository, get_lead_repo
 from app.repositories.operator_repo import OperatorRepository, get_operator_repo
 from app.repositories.source_repo import SourceRepository, get_source_repo
-from app.schemas.contact import ContactResponse, ContactCreate
+from app.schemas.contact import ContactCreate, ContactResponse
 from app.schemas.lead import LeadResponse
-from app.schemas.operator import OperatorResponse, OperatorCreate, OperatorUpdate
-from app.schemas.source import SourceResponse, SourceWeightCreate, SourceCreateRequest
+from app.schemas.operator import OperatorCreate, OperatorResponse, OperatorUpdate
+from app.schemas.source import SourceCreateRequest, SourceResponse
 
 router = APIRouter()
 
@@ -43,14 +43,6 @@ async def update_operator(
     return operator
 
 
-@router.post("/operators", response_model=OperatorResponse)
-async def create_operator(
-    op: OperatorCreate,
-    repo: OperatorRepository = Depends(get_operator_repo),
-):
-    return await repo.create(op.name, op.max_load_limit)
-
-
 @router.post("/sources", response_model=SourceResponse)
 async def create_source(
     request_data: SourceCreateRequest,
@@ -68,7 +60,6 @@ async def register_contact(
     source_repo: SourceRepository = Depends(get_source_repo),
     contact_repo: ContactRepository = Depends(get_contact_repo),
 ):
-
     lead = await lead_repo.get_or_create(request.lead_external_id)
 
     source_weights = await source_repo.get_weights_for_source(request.source_id)

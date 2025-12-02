@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.api.routers import router as api_router
 from app.core.db import init_db
 

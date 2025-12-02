@@ -1,7 +1,11 @@
+from typing import List
+
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+
+from app.models.contact import Contact
 
 
 class Lead(Base):
@@ -15,7 +19,7 @@ class Lead(Base):
         index=True,
         nullable=False,
     )
-    contacts: Mapped['Contact'] = relationship(
+    contacts: Mapped[List['Contact']] = relationship(
         'Contact',
         back_populates='lead',
     )

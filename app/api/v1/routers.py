@@ -12,7 +12,7 @@ from app.schemas.lead import LeadResponse
 from app.schemas.operator import OperatorResponse, OperatorCreate, OperatorUpdate
 from app.schemas.source import SourceResponse, SourceWeightCreate, SourceCreateRequest
 
-router = APIRouter(prefix="/v1", tags=["v1"])
+router = APIRouter()
 
 
 @router.post("/operators/", response_model=OperatorResponse)
